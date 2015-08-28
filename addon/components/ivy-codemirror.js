@@ -32,6 +32,9 @@ export default Ember.Component.extend({
   tabindex: null,
   theme: 'default',
   undoDepth: 200,
+  
+  resetSelectionOnContextMenu: true,
+  
   width:null,
   height:null,
   
@@ -95,6 +98,9 @@ export default Ember.Component.extend({
     this._bindCodeMirrorOption('tabindex');
     this._bindCodeMirrorOption('theme');
     this._bindCodeMirrorOption('undoDepth');
+    
+    this._bindCodeMirrorOption('resetSelectionOnContextMenu');
+    
 
     this._bindCodeMirrorProperty('value', this, '_valueDidChange');
     this._valueDidChange();
@@ -103,6 +109,7 @@ export default Ember.Component.extend({
     // onto a hidden element.
     this.on('becameVisible', this, 'refresh');
     this.processSize();
+
   }),
 
   /**
