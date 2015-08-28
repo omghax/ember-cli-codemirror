@@ -44,7 +44,7 @@ export default Ember.Component.extend({
     // will also happen in the next run loop once all properties are synchronized
     var warp = $(this.get("element")).next(".CodeMirror");
 
-    console.log(this.get('element'),warp);
+    //console.log(this.get('element'),warp);
     if(warp.length >0){
 	var cm = warp[0].CodeMirror;
 	cm.setSize(this.get("width"), this.get("height"));
