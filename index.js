@@ -9,6 +9,7 @@ module.exports = {
     var modes = options.modes || [];
     var keyMaps = options.keyMaps || [];
     var themes = options.themes || [];
+    var addons = options.addons || [];
 
     app.import(app.bowerDirectory + '/codemirror/lib/codemirror.css');
     app.import(app.bowerDirectory + '/codemirror/lib/codemirror.js');
@@ -27,7 +28,11 @@ module.exports = {
     themes.forEach(function(theme) {
       app.import(app.bowerDirectory + '/codemirror/theme/' + theme + '.css');
     });
-
+    
+    addons.forEach(function(addon) {
+      app.import(app.bowerDirectory + '/codemirror/addon/' + addon);
+    });
+    
     app.import('vendor/ivy-codemirror/shims.js', {
       exports: {
         'codemirror': ['default']
