@@ -32,6 +32,27 @@ export default Ember.Component.extend({
   tabindex: null,
   theme: 'default',
   undoDepth: 200,
+  
+  resetSelectionOnContextMenu: true,
+  
+  width:null,
+  height:null,
+  
+  partOfSizeChanged: function() {
+    Ember.run.debounce(this, 'processSize', 250);
+  }.observes('width', 'height'),//.on('init'),
+  
+  processSize:function() {
+    // This will only fire once if you set two properties at the same time, and
+    // will also happen in the next run loop once all properties are synchronized
+    var warp = $(this.get("element")).next(".CodeMirror");
+
+    //console.log(this.get('element'),warp);
+    if(warp.length >0){
+	var cm = warp[0].CodeMirror;
+	cm.setSize(this.get("width"), this.get("height"));
+    }
+  },
 
   tagName: 'textarea',
 
@@ -45,7 +66,9 @@ export default Ember.Component.extend({
   },
 
   _initCodemirror: Ember.on('didInsertElement', function() {
-    var codeMirror = CodeMirror.fromTextArea(this.get('element'));
+    var codeMirror = CodeMirror.fromTextArea(this.get('element'),{
+    addModeClass: true
+  });
 
     // Stash away the CodeMirror instance.
     this.set('codeMirror', codeMirror);
@@ -75,6 +98,9 @@ export default Ember.Component.extend({
     this._bindCodeMirrorOption('tabindex');
     this._bindCodeMirrorOption('theme');
     this._bindCodeMirrorOption('undoDepth');
+    
+    this._bindCodeMirrorOption('resetSelectionOnContextMenu');
+    
 
     this._bindCodeMirrorProperty('value', this, '_valueDidChange');
     this._valueDidChange();
@@ -82,6 +108,8 @@ export default Ember.Component.extend({
     // Force a refresh on `becameVisible`, since CodeMirror won't render itself
     // onto a hidden element.
     this.on('becameVisible', this, 'refresh');
+    this.processSize();
+
   }),
 
   /**

@@ -55,7 +55,7 @@ to as well:
   * `theme`
   * `undoDepth`
 
-### Themes / Modes
+### Themes / Modes / Addons
 
 By default, only `codemirror.css` (CodeMirror's default theme) is included. To
 include more themes, modes, and key maps, add `codemirror` options to `Brocfile.js` inside
@@ -66,13 +66,15 @@ var app = new EmberApp({
   codemirror: {
     modes: ['javascript'],
     keyMaps: ['vim'],
-    themes: ['solarized']
+    themes: ['solarized'],
+    addons: ['runmode/runmode.js'] //notice:  addon value should with file extention, for include js or css
   }
 });
 ```
 
 The above example would pull in `mode/javascript/javascript.js`,
-`keymap/vim.js`, `theme/solarized.css` from CodeMirror and add them to
+`keymap/vim.js`, `theme/solarized.css` , `addon/runmode/runmode.js` 
+from CodeMirror and add them to
 `vendor.js` and `vendor.css`, respectively.
 
 ## Contributing
