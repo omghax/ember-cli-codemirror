@@ -51,6 +51,8 @@ export default Ember.Component.extend({
 
     // Set up handlers for CodeMirror events.
     this._bindCodeMirrorEvent('change', this, '_updateValue');
+    this._bindCodeMirrorEvent('keydown', this, '_preventBubbling');
+    this._bindCodeMirrorEvent('keyup', this, '_preventBubbling');
 
     this._bindCodeMirrorProperty('value', this, '_valueDidChange');
     this._valueDidChange();
@@ -133,5 +135,8 @@ export default Ember.Component.extend({
     if (value !== this._codeMirror.getValue()) {
       this._codeMirror.setValue(value || '');
     }
+  },
+  _preventBubbling: function(instance, event){
+      event.stopPropagation();
   }
 });
