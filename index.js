@@ -1,6 +1,8 @@
 /* jshint node: true */
 'use strict';
 
+var fs = require('fs');
+
 module.exports = {
   name: 'ivy-codemirror',
 
@@ -9,6 +11,7 @@ module.exports = {
     var modes = options.modes || [];
     var keyMaps = options.keyMaps || [];
     var themes = options.themes || [];
+    var addons = options.addons || [];
 
     if (!process.env.EMBER_CLI_FASTBOOT) {
       app.import(app.bowerDirectory + '/codemirror/lib/codemirror.css');
@@ -27,6 +30,18 @@ module.exports = {
   
       themes.forEach(function(theme) {
         app.import(app.bowerDirectory + '/codemirror/theme/' + theme + '.css');
+      });
+
+      addons.forEach(function(addon) {
+        var addonDir = app.bowerDirectory + '/codemirror/addon/' + addon;
+        if (!addonDir) { return; }
+
+        var addonFiles = fs.readdirSync(addonDir);
+        if (!addonFiles.length) { return; }
+
+        addonFiles.forEach(function(file) {
+          app.import(addonDir + '/' + file);
+        });
       });
   
       app.import('vendor/ivy-codemirror/shims.js', {
