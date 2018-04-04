@@ -1,7 +1,9 @@
 /* eslint-env node */
 'use strict';
-
-var path = require('path');
+const Funnel = require('broccoli-funnel');
+const map = require('broccoli-stew').map;
+const path = require('path');
+const mergeTrees = require('broccoli-merge-trees');
 
 module.exports = {
   init: function() {
@@ -55,10 +57,6 @@ module.exports = {
       Object.assign(this.addonConfig, app.options.codemirror);
     }
 
-    if (process.env.EMBER_CLI_FASTBOOT) {
-      return;
-    }
-
     this._super.included.apply(this, arguments);
 
     app.import('vendor/codemirror/lib/codemirror.js');
@@ -96,7 +94,6 @@ module.exports = {
       }
     });
   },
-
   options: {
     nodeAssets: {
       codemirror: function() {
@@ -126,11 +123,18 @@ module.exports = {
 
         return {
           import: ['lib/codemirror.css'].concat(addonStyles, themeStyles),
-          vendor: [
-            'lib/codemirror.js',
-            'addon/mode/simple.js',
-            'addon/mode/multiplex.js'
-          ].concat(addonScripts, modeScripts, keyMapScripts)
+          vendor: {
+            include: [
+              'lib/codemirror.js',
+              'addon/mode/simple.js',
+              'addon/mode/multiplex.js'
+            ].concat(addonScripts, modeScripts, keyMapScripts),
+            processTree(tree) {
+              return map(tree, (content) => {
+                return `if (typeof FastBoot === 'undefined') {\n ${content} \n}`;
+              });
+            }
+          }
         };
       }
     }
