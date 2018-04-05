@@ -1,12 +1,12 @@
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
-
+if (typeof FastBoot === 'undefined') {
 (function(mod) {
   if (typeof exports == "object" && typeof module == "object") // CommonJS
-    mod(require("bower_components/codemirror/lib/codemirror"), 
+    mod(require("bower_components/codemirror/lib/codemirror"),
       require("bower_components/codemirror/addon/mode/simple"));
   else if (typeof define == "function" && define.amd) // AMD
-    define(["bower_components/codemirror/lib/codemirror", 
+    define(["bower_components/codemirror/lib/codemirror",
       "bower_components/codemirror/addon/mode/simple"], mod);
   else // Plain browser env
     mod(CodeMirror);
@@ -23,3 +23,4 @@
 
   CodeMirror.defineMIME("text/x-handlebars-template", "htmlhandlebars");
 });
+}
